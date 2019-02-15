@@ -7,7 +7,7 @@ Tested on OSX, but might work in other `bash` environments.
 ## Installation
 
 Dependencies: 
-- [gdrive](https://github.com/prasmussen/gdrive)
+- [gdrive](https://github.com/prasmussen/gdrive) (make sure you authorise with `gdrive about`)
 - [markdown-it](https://github.com/markdown-it/markdown-it) installed globally (.e. `npm install -g markdown-it`)
 
 ```
