@@ -1,6 +1,10 @@
 #!/bin/bash
 set -o errexit -o pipefail
 
+scriptpath="${0%/*}"
+. $scriptpath/mo
+
+
 cp_open() {
   if hash open 2>/dev/null; then
       open "$@"
@@ -32,9 +36,13 @@ data=$(
 )
 
 # parse markdown with markdown-it
-md=$(echo $data | markdown-it)
+html="$(echo "$data" | markdown-it)"
+set -f # Prevents glob expansion of * characters in CSS file
+css="$(cat $scriptpath/typebase.css)"
+echo "<html><head><style>{{css}}</style></head><body>{{html}}</body></html>" | mo
+set +f
 # upload the file with gdrive
-upload=$(echo $md | gdrive upload - --mime application/vnd.google-apps.document "$filename")
+upload=$(echo $html | gdrive upload - --mime application/vnd.google-apps.document "$filename")
 # get the fileID from the upload result
 fileid=$(echo "$upload" | grep Uploaded | sed 's/Uploaded \([^ ]*\).*/\1/')
 # use gdrive to get the file info
